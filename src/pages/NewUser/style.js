@@ -20,8 +20,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
     padding: 10,
     height: 50,
+    borderWidth: 0,
     borderBottomWidth: 1,
-    borderBottomColor: '#33ACFF',
+    borderColor: '#33ACFF',
     marginLeft: 'auto',  
     marginRight: 'auto',
     color: '#4d5156'  

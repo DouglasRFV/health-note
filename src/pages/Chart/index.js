@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { LineChart, YAxis, Grid } from 'react-native-svg-charts'
 import { Text } from 'react-native-svg';
 
-export default function Chart({ navigation }) {
+export default function Chart({ navigation, route }) {
 
   const data = [50, 10, 40, 95, -4, -24, 85, 91, 35, 53, -53, 24, 50, -20, -80];
 

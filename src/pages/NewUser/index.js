@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
+import DropDownPicker from 'react-native-dropdown-picker';
 
 import firebase from '../../config/firebase'
 import styles from './style';
@@ -11,15 +12,36 @@ export default function NewUser({navigation}) {
   const [nome, setNome] = useState('');
   const [tipoUsuario, setTipoUsuario] = useState('');
   const [crm, setCrm] = useState('');
+  const [open, setOpen] = useState(false);
   const [errorRegister, setErrorRegister] = useState('');
+
+  const db = firebase.firestore();
+
+  const [items, setItems] = useState([
+    {label: 'Médico', value: '1'},
+    {label: 'Paciente', value: '2'}
+  ]);
 
   const register = () => {
     firebase.auth().createUserWithEmailAndPassword(email, password)
       .then((userCredential) => {
         const user = userCredential.user;
+        
+        db.collection('dadosUsuarios').doc(user.uid).set({
+          nome: nome, 
+          tipoUsuario: tipoUsuario,
+          crm: crm ? crm : ''
+        });
+        setEmail('');
+        setPassword('');
+        setNome('');
+        setTipoUsuario('');
+        setCrm('');
         navigation.navigate('Chart', { idUser: user.uid });
+
       })
       .catch((error) => {
+        console.log('ERROR', error);
         setErrorRegister(true);
         const errorCode = error.code;
         const errorMessage = error.message;
@@ -54,13 +76,28 @@ export default function NewUser({navigation}) {
         onChangeText={(text) => setNome(text)}
         value={nome}
       />
-      <TextInput
+      <DropDownPicker
         style={styles.input}
-        placeholder='Insira seu CRM'
-        type="text"
-        onChangeText={(text) => setCrm(text)}
-        value={crm}
+        placeholder='Tipo de Usuário'
+        placeholderStyle={{
+          color: "grey"
+        }}
+        open={open}
+        value={tipoUsuario}
+        items={items}
+        setOpen={setOpen}
+        setValue={setTipoUsuario}
+        setItems={setItems}
       />
+      {tipoUsuario === '1' ? 
+          <TextInput
+            style={styles.input}
+            placeholder='Insira seu CRM'
+            type="text"
+            onChangeText={(text) => setCrm(text)}
+            value={crm}
+          /> : <View/>
+      }
       {errorRegister === true ?
         <View style={styles.contentAlert}>
           <MaterialCommunityIcons
