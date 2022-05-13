@@ -37,7 +37,7 @@ export default function NewUser({navigation}) {
         setNome('');
         setTipoUsuario('');
         setCrm('');
-        navigation.navigate('Chart', { idUser: user.uid });
+        navigation.navigate('Afericao', { idUser: user.uid });
 
       })
       .catch((error) => {

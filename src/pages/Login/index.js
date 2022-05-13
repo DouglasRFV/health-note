@@ -14,7 +14,7 @@ export default function Login({ navigation }) {
     firebase.auth().signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        navigation.navigate('Chart', { idUser: user.uid });
+        navigation.navigate('Afericao', { idUser: user.uid });
       })
       .catch((error) => {
         setErrorLogin(true);

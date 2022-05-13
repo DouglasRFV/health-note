@@ -14,7 +14,7 @@ export default function Afericao({ navigation, route }) {
   const db = firebase.firestore();
 
   const salvarAfericao = () => {
-    db.collection('afericoes').doc('n6C5XAnNtPUyJ1CCy15sKMEJdJ82').update({
+    db.collection('afericoes').doc(route.params.idUser).set({
       '2020-05-11': {
         glicemia,
         pressao
