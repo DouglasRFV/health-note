@@ -39,7 +39,7 @@ export default function Home({ navigation, route }) {
       {dadosUsuario.crm === '' ? 
           <Text style={styles.title}>{dadosUsuario.nome}!</Text>
         : 
-          <Text style={styles.title}>Dr. {dadosUsuario.nome}!</Text>
+          <Text style={styles.title}>Dr.(a) {dadosUsuario.nome}!</Text>
       }
       <Text>{dadosUsuario.crm}</Text>
     </View>

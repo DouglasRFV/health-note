@@ -15,6 +15,7 @@ export default function Login({ navigation }) {
       .then((userCredential) => {
         const user = userCredential.user;
         navigation.navigate('Home', { idUser: user.uid });
+        global.userId = user.uid;
       })
       .catch((error) => {
         setErrorLogin(true);

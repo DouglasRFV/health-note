@@ -27,6 +27,18 @@ const styles = StyleSheet.create({
     marginRight: 'auto',
     color: '#4d5156'  
   },
+  inputDate: {
+    width: 255,
+    marginTop: 10,
+    padding: 10,
+    height: 50,
+    borderWidth: 0,
+    borderBottomWidth: 1,
+    borderColor: '#33ACFF',
+    marginLeft: 10,  
+    marginRight: 'auto',
+    color: '#4d5156'  
+  },
   buttonRegister: {
     width: 200,
     height: 50,
@@ -41,7 +53,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   contentAlert: {
-    marginTop: 20,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center'
@@ -58,6 +69,10 @@ const styles = StyleSheet.create({
   linkLogin: {
     color: '#1877f2',
     fontSize: 16
+  },
+  icon: {
+    marginTop: 30,
+    marginLeft: 10
   }
 });
 
