@@ -32,7 +32,7 @@ export default function Afericao({ navigation, route }) {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}
     >
-      <Text style={styles.title}>Aferições diárias</Text>
+      <Text style={styles.title}>Aferição diária</Text>
       <TextInput
         style={styles.input}
         placeholder='Insira sua glicemia'
