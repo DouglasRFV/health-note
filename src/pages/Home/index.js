@@ -19,7 +19,7 @@ export default function Home({ navigation, route }) {
     db.collection('dadosUsuarios').doc(idUser).get()
       .then(doc => {
         if (doc && doc.exists) {
-          console.log(doc.id, '=>', doc.data());
+          // console.log(doc.id, '=>', doc.data());
           setDadosUsuario(doc.data())
         }
       })

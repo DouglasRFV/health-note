@@ -7,6 +7,7 @@ import NewUser from "./src/pages/NewUser";
 import Home from "./src/pages/Home";
 import Chart from "./src/pages/Chart";
 import Afericao from "./src/pages/Afericao";
+import MinhasAfericoes from "./src/pages/MinhasAfericoes";
 
 const Drawer = createDrawerNavigator();
 
@@ -57,6 +58,15 @@ export default function App() {
             headerTintColor: "#33ACFF",
             headerTitle: "Anotar Aferição",
             drawerLabel: 'Anotar Aferição'
+          }}
+        />
+        <Drawer.Screen
+          name="Minhas Aferições"
+          component={MinhasAfericoes}
+          options={{
+            headerTintColor: "#33ACFF",
+            headerTitle: "Minhas Aferições",
+            drawerLabel: 'Minhas Aferições'
           }}
         />
       </Drawer.Navigator>

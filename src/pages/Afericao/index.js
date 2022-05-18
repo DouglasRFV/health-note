@@ -22,6 +22,7 @@ export default function Afericao({ navigation, route }) {
   const [focus, setFocus] = useState(false);
   const [glicemia, setGlicemia] = useState('');
   const [pressao, setPressao] = useState('');
+  const [observacao, setObservacao] = useState('');
   const [errorRegister, setErrorRegister] = useState('');
   const db = firebase.firestore();
 
@@ -44,10 +45,11 @@ export default function Afericao({ navigation, route }) {
   const salvarAfericao = () => {
     db.collection('afericoes').doc(global.userId).update({
       [dateSave]: {
+        'data': dateSave,
         glicemia,
-        pressao
-      }
-    }).then(() => {
+        pressao,
+        observacao
+    }}).then(() => {
       console.log("Document successfully written!");
     })
       .catch((error) => {
@@ -61,26 +63,6 @@ export default function Afericao({ navigation, route }) {
       style={styles.container}
     >
       <Text style={styles.title}>Aferição diária</Text>
-      <TextInput
-        style={styles.input}
-        placeholder='Insira sua glicemia'
-        type="number"
-        onChangeText={(text) => {
-          setGlicemia(text);
-          setFocus(true);
-        }}
-        value={glicemia}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder='Insira sua pressão'
-        type="number"
-        onChangeText={(text) => {
-          setPressao(text);
-          setFocus(true);
-        }}
-        value={pressao}
-      />
       <View style={styles.contentAlert}>
         <TextInput
           style={styles.inputDate}
@@ -104,10 +86,40 @@ export default function Afericao({ navigation, route }) {
           value={date}
           mode={'date'}
           is24Hour={true}
-          displey='default'
+          display='default'
           onChange={onChangeDate}
         />
       )}
+      <TextInput
+        style={styles.input}
+        placeholder='Insira sua glicemia'
+        keyboardType="numeric"
+        onChangeText={(text) => {
+          setGlicemia(text);
+          setFocus(true);
+        }}
+        value={glicemia}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder='Insira sua pressão'
+        keyboardType="numeric"
+        onChangeText={(text) => {
+          setPressao(text);
+          setFocus(true);
+        }}
+        value={pressao}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder='Observação (Opcional)'
+        type="text"
+        onChangeText={(text) => {
+          setObservacao(text);
+          setFocus(true);
+        }}
+        value={observacao}
+      />
       {errorRegister === true ?
         <View style={styles.contentAlert}>
           <MaterialCommunityIcons
