@@ -24,7 +24,8 @@ const styles = StyleSheet.create({
     borderBottomColor: '#33ACFF',
     marginLeft: 'auto',  
     marginRight: 'auto',
-    color: '#4d5156'  
+    color: '#4d5156',
+    fontSize: 20  
   },
   buttonLogin: {
     width: 200,
@@ -37,7 +38,8 @@ const styles = StyleSheet.create({
   },
   textButtonLogin: {
     color: '#ffffff',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    fontSize: 20
   },
   contentAlert: {
     marginTop: 20,
@@ -52,11 +54,12 @@ const styles = StyleSheet.create({
   }, 
   registration: {
     marginTop: 20,
-    color: '#4d5156'
+    color: '#4d5156',
+    fontSize: 18
   },
   linkSubscribe: {
     color: '#1877f2',
-    fontSize: 16
+    fontSize: 18
   }
 });
 

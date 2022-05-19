@@ -25,19 +25,26 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   textItem: {
+    marginTop: 2,
     fontWeight: 'bold',
     color: '#55555A',
-    fontSize: 15.5
+    fontSize: 18
+  },
+  textItemObservacao: {
+    marginTop: 2,
+    color: '#55555A',
+    fontSize: 18
   },
   titleItem: {
     fontWeight: 'bold',
     color: '#2383DE',
-    fontSize: 25
+    fontSize: 28
   },
   textItemAlert: {
+    marginTop: 2,
     fontWeight: 'bold',
     color: '#A00011',
-    fontSize: 15.5
+    fontSize: 18
   },
   contentAlert: {
     flexDirection: 'row',

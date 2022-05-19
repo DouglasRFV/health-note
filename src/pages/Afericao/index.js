@@ -21,7 +21,8 @@ export default function Afericao({ navigation, route }) {
   const [dateSave, setDateSave] = useState('');
   const [focus, setFocus] = useState(false);
   const [glicemia, setGlicemia] = useState('');
-  const [pressao, setPressao] = useState('');
+  const [pressaoSist, setPressaoSist] = useState('');
+  const [pressaoDiast, setPressaoDiast] = useState('');
   const [observacao, setObservacao] = useState('');
   const [errorRegister, setErrorRegister] = useState('');
   const db = firebase.firestore();
@@ -47,10 +48,18 @@ export default function Afericao({ navigation, route }) {
       [dateSave]: {
         'data': dateSave,
         glicemia,
-        pressao,
+        pressaoSist,
+        pressaoDiast,
         observacao
-    }}).then(() => {
+      }
+    }).then(() => {
       console.log("Document successfully written!");
+      setDateInput('');
+      setDateSave('');
+      setGlicemia('');
+      setPressaoDiast('');
+      setPressaoSist('');
+      setObservacao('');
     })
       .catch((error) => {
         console.error("Error writing document: ", error);
@@ -67,6 +76,7 @@ export default function Afericao({ navigation, route }) {
         <TextInput
           style={styles.inputDate}
           placeholder='Insira a data'
+          placeholderTextColor={'#35414F'}
           type="date"
           onFocus={() => setShow(true)}
           value={dateInput}
@@ -93,6 +103,7 @@ export default function Afericao({ navigation, route }) {
       <TextInput
         style={styles.input}
         placeholder='Insira sua glicemia'
+        placeholderTextColor={'#35414F'}
         keyboardType="numeric"
         onChangeText={(text) => {
           setGlicemia(text);
@@ -100,19 +111,40 @@ export default function Afericao({ navigation, route }) {
         }}
         value={glicemia}
       />
-      <TextInput
-        style={styles.input}
-        placeholder='Insira sua pressão'
-        keyboardType="numeric"
-        onChangeText={(text) => {
-          setPressao(text);
-          setFocus(true);
-        }}
-        value={pressao}
-      />
+      <Text style={styles.textPressao}>Insira sua pressão:</Text>
+      <View style={styles.contentAlert}>
+        <TextInput
+          style={styles.inputPressao}
+          placeholder='Sistólica'
+          keyboardType="numeric"
+          onChangeText={(text) => {
+            setPressaoSist(text);
+            setFocus(true);
+          }}
+          value={pressaoSist}
+        />
+        <MaterialCommunityIcons
+            name="slash-forward"
+            size={30}
+            color="#bdbdbd"
+            style={{marginBottom: -30}}
+          />
+        <TextInput
+          style={styles.inputPressao}
+          placeholder='Diastólica'
+          keyboardType="numeric"
+          onChangeText={(text) => {
+            setPressaoDiast(text);
+            setFocus(true);
+          }}
+          value={pressaoDiast}
+        />
+      </View>
       <TextInput
         style={styles.input}
         placeholder='Observação (Opcional)'
+        placeholderTextColor={'#35414F'}
+        pla
         type="text"
         onChangeText={(text) => {
           setObservacao(text);
@@ -132,19 +164,19 @@ export default function Afericao({ navigation, route }) {
         :
         <View />
       }
-      {glicemia === '' || pressao === '' ?
+      {glicemia === '' || pressaoSist === '' || pressaoDiast === '' ?
         <TouchableOpacity
           disabled={true}
           style={styles.buttonRegister}
         >
-          <Text style={styles.textButtonRegister}>Salvar</Text>
+          <Text style={styles.textButtonSave}>Salvar</Text>
         </TouchableOpacity>
         :
         <TouchableOpacity
           style={styles.buttonRegister}
           onPress={salvarAfericao}
         >
-          <Text style={styles.textButtonRegister}>Salvar</Text>
+          <Text style={styles.textButtonSave}>Salvar</Text>
         </TouchableOpacity>
       }
       <View style={{ height: 100 }} />

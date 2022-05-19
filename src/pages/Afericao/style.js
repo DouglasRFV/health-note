@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     paddingTop: Platform.OS === 'ios' ? 0 : 50
   },
   title: {
-    fontSize: 30,
+    fontSize: 40,
     color: '#33ACFF',
     marginBottom: 10,
     fontWeight: 'bold'
@@ -18,26 +18,49 @@ const styles = StyleSheet.create({
   input: {
     width: 300,
     marginTop: 10,
-    padding: 10,
     height: 50,
     borderWidth: 0,
     borderBottomWidth: 1,
     borderColor: '#33ACFF',
     marginLeft: 'auto',  
     marginRight: 'auto',
-    color: '#4d5156'  
+    color: '#161819',
+    fontSize: 20
   },
-  inputDate: {
-    width: 255,
-    marginTop: 10,
+  inputPressao: {
+    width: 134,
     padding: 10,
+    paddingBottom: -20,
     height: 50,
     borderWidth: 0,
     borderBottomWidth: 1,
     borderColor: '#33ACFF',
-    marginLeft: 10,  
+    marginLeft: 'auto',  
     marginRight: 'auto',
-    color: '#4d5156'  
+    color: '#161819',
+    fontSize: 20,
+    fontWeight: 'bold'
+  },
+  inputDate: {
+    width: 255,
+    marginTop: 10,
+    height: 50,
+    borderWidth: 0,
+    borderBottomWidth: 1,
+    borderColor: '#33ACFF',
+    marginLeft: 2,  
+    marginRight: 'auto',
+    color: '#161819',
+    fontSize: 20
+  },
+  textPressao: {
+    width: 255,
+    marginTop: 30,
+    marginLeft: -50,
+    marginBottom: -15,
+    marginStart: -20,
+    color: '#161819',
+    fontSize: 20,
   },
   buttonRegister: {
     width: 200,
@@ -48,9 +71,10 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     marginTop: 30
   },
-  textButtonRegister: {
+  textButtonSave: {
     color: '#ffffff',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    fontSize: 20
   },
   contentAlert: {
     flexDirection: 'row',
@@ -64,7 +88,7 @@ const styles = StyleSheet.create({
   }, 
   login: {
     marginTop: 20,
-    color: '#4d5156'
+    color: '#161819'
   },
   linkLogin: {
     color: '#1877f2',
@@ -73,7 +97,7 @@ const styles = StyleSheet.create({
   icon: {
     marginTop: 30,
     marginLeft: 10
-  }
+  },
 });
 
 export default styles;

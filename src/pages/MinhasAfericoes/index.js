@@ -22,7 +22,7 @@ export default function MinhasAfericoes({ navigation, route }) {
             let tempDate = new Date(item.data);
             let fDay = tempDate.getDate() < 10 ? `0${tempDate.getDate()}` : tempDate.getDate();
             let fMonth = tempDate.getMonth() + 1 < 10 ? `0${tempDate.getMonth() + 1}` : tempDate.getMonth() + 1;
-            let stringDate = `${fDay}/${fMonth}/${tempDate.getFullYear()}`
+            let stringDate = `${fDay+1}/${fMonth}/${tempDate.getFullYear()}`
             item.dataStr = stringDate;
             arrDados.push(item)
           })
@@ -30,6 +30,7 @@ export default function MinhasAfericoes({ navigation, route }) {
             return new Date(a.data) - new Date(b.data);
           })
           setDadosAfericoes(arrDados);
+          console.log('DADOS');
         }
       })
       .catch(err => {
@@ -48,7 +49,7 @@ export default function MinhasAfericoes({ navigation, route }) {
     //   });
   }
 
-  const Item = ({ data, glicemia, pressao, observacao }) => {
+  const Item = ({ data, glicemia, pressaoSist, pressaoDiast, observacao }) => {
     return (
       <View style={styles.item}>
         <Text style={styles.titleItem}>{data}</Text>
@@ -65,9 +66,9 @@ export default function MinhasAfericoes({ navigation, route }) {
           :
           <Text style={styles.textItem}>Glicemia: {glicemia} mg/dL</Text>
         }
-        {pressao >= 13 ?
+        {pressaoSist >= 13 || pressaoDiast > 8 ?
           <View style={styles.contentAlert}>
-            <Text style={styles.textItemAlert}>Pressão Arterial acima do normal: {pressao} mmHG</Text>
+            <Text style={styles.textItemAlert}>Pressão acima do normal: {pressaoSist}/{pressaoDiast} mmHG</Text>
             <MaterialCommunityIcons
               name="alert-circle"
               size={24}
@@ -76,9 +77,9 @@ export default function MinhasAfericoes({ navigation, route }) {
             />
           </View>
           :
-          <Text style={styles.textItem}>Pressão Arterial: {pressao} mmHG</Text>
+          <Text style={styles.textItem}>Pressão Arterial: {pressaoSist}/{pressaoDiast} mmHG</Text>
         }
-        <Text><Text style={styles.textItem}>Obs.: </Text>{observacao}</Text>
+        <Text  style={styles.textItemObservacao}><Text style={styles.textItem}>Obs.: </Text>{observacao}</Text>
       </View>
     );
   };
@@ -86,11 +87,12 @@ export default function MinhasAfericoes({ navigation, route }) {
   const renderItem = ({ item }) => {
     return (
       <TouchableOpacity
-        onPress={atualizaAfericao}>
+        onPress={() => {console.log(item);}}>
         <Item
           data={item.dataStr}
           glicemia={item.glicemia}
-          pressao={item.pressao}
+          pressaoSist={item.pressaoSist}
+          pressaoDiast={item.pressaoDiast}
           observacao={item.observacao}
         />
       </TouchableOpacity>
