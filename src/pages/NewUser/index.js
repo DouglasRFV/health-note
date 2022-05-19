@@ -77,10 +77,12 @@ export default function NewUser({navigation}) {
         value={nome}
       />
       <DropDownPicker
-        style={styles.input}
+        style={styles.inputDropdown}
         placeholder='Tipo de Usuário'
         placeholderStyle={{
-          color: "grey"
+          color: '#A5B0BD',
+          fontSize: 20,
+          paddingLeft: 5
         }}
         open={open}
         value={tipoUsuario}

@@ -48,7 +48,8 @@ export default function App() {
           options={{
             headerTintColor: "#33ACFF",
             headerTitle: 'Gráfico de Aferições',
-            drawerLabel: 'Gráfico de Aferições'
+            drawerLabel: 'Gráfico de Aferições',
+            drawerItemStyle: { display: 'none' },
           }}
         />
         <Drawer.Screen

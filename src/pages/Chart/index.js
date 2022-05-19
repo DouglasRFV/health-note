@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
-import { LineChart, YAxis, Grid } from 'react-native-svg-charts'
+import { LineChart, YAxis, XAxis, Grid } from 'react-native-svg-charts'
 import { Text } from 'react-native-svg';
+import styles from './style';
 
-export default function Chart({ navigation, route }) {
+export default function Chart({ navigation, route, dadosUsuario, dadosAfericoes }) {
 
-  const data = [50, 10, 40, 95, -4, -24, 85, 91, 35, 53, -53, 24, 50, -20, -80];
+  const [chartGlicemia, setChartGlicemia] = useState([]);
 
-  const contentInset = { top: 20, bottom: 20 }
+  const contentInset = { top: 20, bottom: 20 };
+
+  // console.log('DADOS USUARIO', dadosUsuario);
+  // console.log('DADOS AFERICOES', dadosAfericoes);
 
   const Label = ({ slices }) => {
     return slices.map((slice, index) => {
@@ -28,26 +32,53 @@ export default function Chart({ navigation, route }) {
     })
   }
 
+  const loadDataCharts = () => {
+    const dataCharts = [];
+    dadosAfericoes.forEach(element => {
+      // console.log('ELEMENT =>', element.glicemia);
+      dataCharts.push(parseInt(element.glicemia));
+    });
+    setChartGlicemia(dataCharts);
+    console.log('CHART =>', chartGlicemia);
+  }
+
+  useEffect(() => {
+    loadDataCharts();
+  }, []);
+
   return (
-    <View style={{ height: 200, flexDirection: 'row' }}>
+    // <View style={{ height: 200, flexDirection: 'row' }}>
+    <View style={styles.chart}>
       <YAxis
-        data={data}
+        data={chartGlicemia}
         contentInset={contentInset}
         svg={{
-          fill: 'blue',
+          fill: '#090D18',
           fontSize: 10,
+          fontWeight: 'bold'
         }}
         numberOfTicks={10}
-        formatLabel={(value) => `${value}ºC`}
+        formatLabel={(value) => `${value}`}
       />
       <LineChart
         style={{ flex: 1, marginLeft: 16 }}
-        data={data}
-        svg={{ stroke: 'rgb(134, 65, 244)' }}
+        data={chartGlicemia}
+        svg={{ stroke: '#4F7A9C' }}
         contentInset={contentInset}
       >
         <Grid />
       </LineChart>
+      <XAxis
+        // style={{ marginHorizontal: -10 }}
+        data={chartGlicemia}
+        formatLabel={(value, index) => index}
+        contentInset={contentInset}
+        svg={{
+          fill: '#090D18',
+          fontSize: 10,
+          fontWeight: 'bold'
+        }}
+      />
     </View>
   )
 }

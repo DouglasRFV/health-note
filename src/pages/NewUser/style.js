@@ -22,10 +22,23 @@ const styles = StyleSheet.create({
     height: 50,
     borderWidth: 0,
     borderBottomWidth: 1,
-    borderColor: '#33ACFF',
+    borderBottomColor: '#33ACFF',
     marginLeft: 'auto',  
     marginRight: 'auto',
-    color: '#4d5156'  
+    color: '#4d5156',
+    fontSize: 20 
+  },
+  inputDropdown: {
+    width: 310,
+    marginTop: 10,
+    padding: 10,
+    height: 50,
+    borderWidth: 0,
+    borderBottomWidth: 1,
+    borderBottomColor: '#33ACFF',
+    marginLeft: 'auto',  
+    marginRight: 'auto',
+    color: '#4d5156' 
   },
   buttonRegister: {
     width: 200,
@@ -53,11 +66,12 @@ const styles = StyleSheet.create({
   }, 
   login: {
     marginTop: 20,
-    color: '#4d5156'
+    color: '#4d5156',
+    fontSize: 18
   },
   linkLogin: {
     color: '#1877f2',
-    fontSize: 16
+    fontSize: 18
   }
 });
 

@@ -3,14 +3,11 @@ import { Platform } from "react-native-web";
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: Platform.OS === 'ios' ? 0 : 50
+    paddingTop: Platform.OS === 'ios' ? 0 : 20
   },
   title: {
-    fontSize: 38,
+    fontSize: 30,
     color: '#33ACFF',
     marginLeft: 10,
     fontWeight: 'bold'
@@ -26,34 +23,14 @@ const styles = StyleSheet.create({
     marginRight: 'auto',
     color: '#4d5156'  
   },
-  button: {
-    width: 200,
-    height: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#33ACFF',
-    borderRadius: 50,
-    marginTop: 30
-  },
-  textButton: {
-    color: '#ffffff',
-    fontWeight: 'bold'
-  },
-  contentAlert: {
+  textItem: {
     marginTop: 20,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center'
+    marginLeft: 10,
+    marginBottom: -5,
+    fontWeight: 'bold',
+    color: '#55555A',
+    fontSize: 18
   },
-  warningAlert: {
-    paddingLeft: 10,
-    color: '#bdbdbd',
-    fontSize: 16
-  }, 
-  registration: {
-    marginTop: 20,
-    color: '#4d5156'
-  }
 });
 
 export default styles;
