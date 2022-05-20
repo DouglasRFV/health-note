@@ -27,6 +27,13 @@ export default function Afericao({ navigation, route }) {
   const [errorRegister, setErrorRegister] = useState('');
   const db = firebase.firestore();
 
+  const formataStringData = (data) => {
+    const ano = data.split("-")[0];
+    const mes = data.split("-")[1];
+    const dia = data.split("-")[2];
+
+    return ("0" + dia).slice(-2) + '/' + ("0" + mes).slice(-2) + '/' + ano;
+  }
 
   const onChangeDate = (event, selectedDate) => {
     const currentDate = selectedDate || date;

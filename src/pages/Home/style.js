@@ -4,7 +4,9 @@ import { Platform } from "react-native-web";
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
-    paddingTop: Platform.OS === 'ios' ? 0 : 20
+    paddingTop: Platform.OS === 'ios' ? 0 : 20,
+    marginLeft: 'auto',  
+    marginRight: 'auto',
   },
   title: {
     fontSize: 30,

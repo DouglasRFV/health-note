@@ -11,6 +11,14 @@ export default function MinhasAfericoes({ navigation, route }) {
 
   const db = firebase.firestore();
 
+  const formataStringData = (data) => {
+    var ano = data.split("-")[0];
+    var mes = data.split("-")[1];
+    var dia = data.split("-")[2];
+
+    return ("0" + dia).slice(-2) + '/' + ("0" + mes).slice(-2) + '/' + ano;
+  }
+
   const getDadosAfericoes = () => {
     console.log('ENTROU', global.userId);
     db.collection('afericoes').doc(global.userId).get()
@@ -19,10 +27,7 @@ export default function MinhasAfericoes({ navigation, route }) {
           let dados = doc.data();
           const arrDados = [];
           Object.values(dados).map(item => {
-            let tempDate = new Date(item.data);
-            let fDay = tempDate.getDate() < 10 ? `0${tempDate.getDate()}` : tempDate.getDate();
-            let fMonth = tempDate.getMonth() + 1 < 10 ? `0${tempDate.getMonth() + 1}` : tempDate.getMonth() + 1;
-            let stringDate = `${fDay+1}/${fMonth}/${tempDate.getFullYear()}`
+            let stringDate = formataStringData(item.data);
             item.dataStr = stringDate;
             arrDados.push(item)
           })
@@ -79,7 +84,7 @@ export default function MinhasAfericoes({ navigation, route }) {
           :
           <Text style={styles.textItem}>Pressão Arterial: {pressaoSist}/{pressaoDiast} mmHG</Text>
         }
-        <Text  style={styles.textItemObservacao}><Text style={styles.textItem}>Obs.: </Text>{observacao}</Text>
+        <Text style={styles.textItemObservacao}><Text style={styles.textItem}>Obs.: </Text>{observacao}</Text>
       </View>
     );
   };
@@ -87,7 +92,7 @@ export default function MinhasAfericoes({ navigation, route }) {
   const renderItem = ({ item }) => {
     return (
       <TouchableOpacity
-        onPress={() => {console.log(item);}}>
+        onPress={() => { console.log(item); }}>
         <Item
           data={item.dataStr}
           glicemia={item.glicemia}

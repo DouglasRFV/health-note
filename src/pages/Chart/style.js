@@ -8,11 +8,8 @@ const styles = StyleSheet.create({
     paddingTop: Platform.OS === 'ios' ? 0 : 10
   },
   chart: {
-    backgroundColor: '#E3FEFE',
-    padding: 5,
-    marginVertical: 8,
-    marginHorizontal: 5,
-    height: 200, flexDirection: 'row',
+    height: 200, 
+    flexDirection: 'row',
     borderRadius: 5,
     borderWidth: 0.8,
     borderColor: '#A6BFC2',
