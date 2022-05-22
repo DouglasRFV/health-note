@@ -1,8 +1,12 @@
 import { StyleSheet } from "react-native";
 import { Platform } from "react-native-web";
+import { Dimensions } from 'react-native';
+
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    width: Dimensions.get("window").width,
     backgroundColor: '#fff',
     paddingTop: Platform.OS === 'ios' ? 0 : 20,
     marginLeft: 'auto',  

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Text, ActivityIndicator } from 'react-native';
 import Chart from '../Chart';
 
 import firebase from '../../config/firebase'
@@ -11,32 +11,13 @@ export default function Home({ navigation, route }) {
   const [arrGlicemia, setArrGlicemia] = useState([]);
   const [arrDiasAfericao, setArrDiasAfericao] = useState([]);
   const [arrPressao, setArrPressao] = useState([]);
+  const [loading, setLoading] = useState([]);
   const [errorRegister, setErrorRegister] = useState('');
 
   const db = firebase.firestore();
-  const idUser = route.params.idUser;
 
-  const itensHome = [
-    {
-
-    }
-  ]
-
-  const getDadosUsuario = () => {
-    db.collection('dadosUsuarios').doc(idUser).get()
-      .then(doc => {
-        if (doc && doc.exists) {
-          // console.log(doc.id, '=>', doc.data());
-          setDadosUsuario(doc.data());
-        }
-      })
-      .catch(err => {
-        console.log('Error getting documents', err);
-      });
-  }
-
-  const getDadosAfericoes = () => {
-    db.collection('afericoes').doc(global.userId).get()
+  const getDadosAfericoes = async () => {
+    await db.collection('afericoes').doc(global.userId).get()
       .then(doc => {
         if (doc && doc.exists) {
           let dados = doc.data();
@@ -65,28 +46,70 @@ export default function Home({ navigation, route }) {
             arrDadosDiasAfericao.push(element.data.substr(8, 9));
           });
 
+          if(arrDados.length < 15) {
+            addItemsArray(arrDadosGlicemia);
+            addItemsArray(arrDadosPressao);
+            addItemsArray(arrDadosDiasAfericao);
+          }
+
           setArrGlicemia(arrDadosGlicemia);
           setArrPressao(arrDadosPressao);
           setArrDiasAfericao(arrDadosDiasAfericao);
-
-          console.log('GLICEMIA =>', arrGlicemia);
-          console.log('PRESSAO =>', arrPressao);
-          console.log('DIAS =>', arrDiasAfericao);
+          setLoading(false);
+          // console.log('GLICEMIA =>', arrGlicemia);
+          // console.log('PRESSAO =>', arrPressao);
+          // console.log('DIAS =>', arrDiasAfericao);
         }
       })
       .catch(err => {
         console.log('Error getting documents', err);
       });
   };
-  
+
+  const getDadosUsuario = async () => {
+    await db.collection('dadosUsuarios').doc(global.userId).get()
+      .then(doc => {
+        if (doc && doc.exists) {
+          setDadosUsuario(doc.data());
+          if (doc.data().tipoUsuario === '1') {
+            setLoading(false);
+          }
+        }
+      })
+      .catch(err => {
+        console.log('Error getting documents', err);
+      });
+  };
+
+  const addItemsArray = (arr) => {
+    if(arr.length < 15){
+      for (let i = 0; arr.length < 15; i++) {
+        arr.unshift("0");
+      }
+    }
+
+    return arr;
+  }
+
   useEffect(() => {
-    getDadosAfericoes();
     getDadosUsuario();
+    getDadosAfericoes();
   }, []);
 
-  return (
-    <View style={styles.container}>
-      {dadosUsuario.tipoUsuario === '2' ?
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator
+          size='large'
+          color={'#33ACFF'}
+          animating={true}
+        />
+        <Text>Aguarde</Text>
+      </View>
+    );
+  } else {
+    if (dadosUsuario.tipoUsuario === '2') {
+      return (
         <View style={styles.container}>
           <Text style={styles.title}>Olá, {dadosUsuario.nome}!</Text>
           <Text style={styles.textItem}>Gráfico de Glicemia(Últimos 15 dias)</Text>
@@ -106,13 +129,19 @@ export default function Home({ navigation, route }) {
             decimalPlaces={1}
           />
         </View>
-        :
-        <View>
+      )
+    } else if (dadosUsuario.tipoUsuario === '1') {
+      return (
+        <View style={styles.container}>
           <Text style={styles.title}>Olá,</Text>
           <Text style={styles.title}>Dr.(a) {dadosUsuario.nome}!</Text>
           <Text>{dadosUsuario.crm}</Text>
         </View>
-      }
-    </View>
-  )
+      )
+    } else {
+      return (
+        <View></View>
+      );
+    }
+  }
 }

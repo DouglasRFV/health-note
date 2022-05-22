@@ -6,7 +6,7 @@ import firebase from '../../config/firebase'
 import styles from './style';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-export default function NewUser({navigation}) {
+export default function NewUser({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [nome, setNome] = useState('');
@@ -18,17 +18,29 @@ export default function NewUser({navigation}) {
   const db = firebase.firestore();
 
   const [items, setItems] = useState([
-    {label: 'Médico', value: '1'},
-    {label: 'Paciente', value: '2'}
+    { label: 'Médico', value: '1' },
+    { label: 'Paciente', value: '2' }
   ]);
 
   const register = () => {
     firebase.auth().createUserWithEmailAndPassword(email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        
+        let today = new Date().toISOString().slice(0, 10);
+        global.userId = user.uid;
+
+        db.collection('afericoes').doc(global.userId).set({
+          [today]: {
+            'data': today,
+            'glicemia': '',
+            'pressaoSist': '',
+            'pressaoDiast': '',
+            'observacao': ''
+          }
+        });
+
         db.collection('dadosUsuarios').doc(user.uid).set({
-          nome: nome, 
+          nome: nome,
           tipoUsuario: tipoUsuario,
           crm: crm ? crm : ''
         });
@@ -91,14 +103,14 @@ export default function NewUser({navigation}) {
         setValue={setTipoUsuario}
         setItems={setItems}
       />
-      {tipoUsuario === '1' ? 
-          <TextInput
-            style={styles.input}
-            placeholder='Insira seu CRM'
-            type="text"
-            onChangeText={(text) => setCrm(text)}
-            value={crm}
-          /> : <View/>
+      {tipoUsuario === '1' ?
+        <TextInput
+          style={styles.input}
+          placeholder='Insira seu CRM'
+          type="text"
+          onChangeText={(text) => setCrm(text)}
+          value={crm}
+        /> : <View />
       }
       {errorRegister === true ?
         <View style={styles.contentAlert}>
