@@ -12,7 +12,11 @@ export default function NewUser({ navigation }) {
   const [nome, setNome] = useState('');
   const [tipoUsuario, setTipoUsuario] = useState('');
   const [crm, setCrm] = useState('');
+  const [cpf, setCpf] = useState('');
+  const [listaMedicos, setListaMedicos] = useState([]);
+  const [nomeMedico, setNomeMedico] = useState('');
   const [open, setOpen] = useState(false);
+  const [openMedico, setOpenMedico] = useState(false);
   const [errorRegister, setErrorRegister] = useState('');
 
   const db = firebase.firestore();
@@ -22,6 +26,25 @@ export default function NewUser({ navigation }) {
     { label: 'Paciente', value: '2' }
   ]);
 
+  const getMedicos = async () => {
+    // console.log('CHAMOU GET MEDICOS');
+    const dados = [];
+    await db.collection('medicos').get()
+      .then((query) => {
+        query.forEach((doc) => {
+          dados.push({
+            label: doc.data().nome,
+            value: doc.data().id
+          });
+        });
+        setListaMedicos(dados);
+      })
+      .catch(err => {
+        console.log('Error getting documents', err);
+      });
+    // console.log('DADOS MÉDICOS =>', dados);
+  }
+
   const register = () => {
     firebase.auth().createUserWithEmailAndPassword(email, password)
       .then((userCredential) => {
@@ -29,27 +52,50 @@ export default function NewUser({ navigation }) {
         let today = new Date().toISOString().slice(0, 10);
         global.userId = user.uid;
 
-        db.collection('afericoes').doc(global.userId).set({
-          [today]: {
-            'data': today,
-            'glicemia': '',
-            'pressaoSist': '',
-            'pressaoDiast': '',
-            'observacao': ''
-          }
-        });
-
         db.collection('dadosUsuarios').doc(user.uid).set({
           nome: nome,
           tipoUsuario: tipoUsuario,
-          crm: crm ? crm : ''
+          crm: crm ? crm : '',
+          cpf: cpf ? cpf : ''
+
         });
+
+        if (crm && crm !== '') {
+          db.collection('medicos').doc(user.uid).set({
+            id: user.uid,
+            nome: nome,
+            crm: crm
+          });
+        } else {
+          db.collection('pacientesMedico').doc(nomeMedico).set({
+            id: user.uid,
+            nome: nome,
+            cpf: cpf
+          });
+
+          db.collection('afericoes').doc(global.userId).set({
+            [today]: {
+              'data': today,
+              'glicemia': '',
+              'pressaoSist': '',
+              'pressaoDiast': '',
+              'observacao': ''
+            }
+          });
+        }
+
         setEmail('');
         setPassword('');
         setNome('');
-        setTipoUsuario('');
         setCrm('');
-        navigation.navigate('Afericao', { idUser: user.uid });
+        setCpf('');
+        
+        if(tipoUsuario === '1') {
+          navigation.navigate('Home', { idUser: user.uid });
+        } else if(tipoUsuario === '2') {
+          navigation.navigate('Afericao', { idUser: user.uid });
+        }
+        setTipoUsuario('');
 
       })
       .catch((error) => {
@@ -60,12 +106,31 @@ export default function NewUser({ navigation }) {
       });
   }
 
+  useEffect(() => {
+    getMedicos();
+  });
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}
     >
       <Text style={styles.title}>Criar conta</Text>
+      <DropDownPicker
+        style={styles.inputDropdown}
+        placeholder='Tipo de Usuário'
+        placeholderStyle={{
+          color: '#A5B0BD',
+          fontSize: 20,
+          paddingLeft: 5
+        }}
+        open={open}
+        value={tipoUsuario}
+        items={items}
+        setOpen={setOpen}
+        setValue={setTipoUsuario}
+        setItems={setItems}
+      />
       <TextInput
         style={styles.input}
         placeholder='Insira seu e-mail'
@@ -88,21 +153,6 @@ export default function NewUser({ navigation }) {
         onChangeText={(text) => setNome(text)}
         value={nome}
       />
-      <DropDownPicker
-        style={styles.inputDropdown}
-        placeholder='Tipo de Usuário'
-        placeholderStyle={{
-          color: '#A5B0BD',
-          fontSize: 20,
-          paddingLeft: 5
-        }}
-        open={open}
-        value={tipoUsuario}
-        items={items}
-        setOpen={setOpen}
-        setValue={setTipoUsuario}
-        setItems={setItems}
-      />
       {tipoUsuario === '1' ?
         <TextInput
           style={styles.input}
@@ -110,7 +160,33 @@ export default function NewUser({ navigation }) {
           type="text"
           onChangeText={(text) => setCrm(text)}
           value={crm}
-        /> : <View />
+        /> : tipoUsuario === '2' ?
+          <View>
+            <TextInput
+              style={styles.input}
+              placeholder='Insira seu CPF'
+              type="text"
+              onChangeText={(text) => setCpf(text)}
+              value={cpf}
+            />
+            <DropDownPicker
+              style={styles.inputDropdown}
+              placeholder='Nome do médico'
+              placeholderStyle={{
+                color: '#A5B0BD',
+                fontSize: 20,
+                paddingLeft: 5
+              }}
+              open={openMedico}
+              value={nomeMedico}
+              items={listaMedicos}
+              setOpen={setOpenMedico}
+              setValue={setNomeMedico}
+              setItems={setListaMedicos}
+            />
+          </View>
+          :
+          <View />
       }
       {errorRegister === true ?
         <View style={styles.contentAlert}>
