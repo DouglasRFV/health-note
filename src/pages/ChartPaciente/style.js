@@ -6,42 +6,17 @@ import { Dimensions } from 'react-native';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: Dimensions.get("window").width,
-    backgroundColor: '#fff',
-    paddingTop: Platform.OS === 'ios' ? 0 : 20,
-    marginLeft: 'auto',  
+    // width: Dimensions.get("window").width + 10,
+    marginLeft: 'auto',
     marginRight: 'auto',
+    backgroundColor: '#fff',
+    paddingTop: Platform.OS === 'ios' ? 0 : 0,
   },
   title: {
     fontSize: 30,
     color: '#33ACFF',
     marginLeft: 10,
     fontWeight: 'bold'
-  },
-  crm: {
-    fontSize: 20,
-    color: '#6C7481',
-    marginLeft: 20,
-    fontWeight: 'bold'
-  },
-  input: {
-    width: 300,
-    marginTop: 10,
-    padding: 10,
-    height: 50,
-    borderBottomWidth: 1,
-    borderBottomColor: '#33ACFF',
-    marginLeft: 'auto',  
-    marginRight: 'auto',
-    color: '#4d5156'  
-  },
-  textItem: {
-    marginTop: 20,
-    marginLeft: 10,
-    marginBottom: -5,
-    fontWeight: 'bold',
-    color: '#55555A',
-    fontSize: 18
   },
   item: {
     backgroundColor: '#C6F4FA',
@@ -61,10 +36,11 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   textItem: {
-    marginTop: 2,
+    marginTop: 10,
+    marginLeft: 10,
     fontWeight: 'bold',
     color: '#55555A',
-    fontSize: 28
+    fontSize: 16
   },
   textItemCPF: {
     marginTop: 2,
@@ -74,6 +50,20 @@ const styles = StyleSheet.create({
   contentAlert: {
     flexDirection: 'row',
     alignItems: 'center'
+  },
+  button: {
+    width: Dimensions.get("window").width - 10,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#33ACFF',
+    borderRadius: 10,
+    marginTop: 10
+  },
+  textButton: {
+    color: '#ffffff',
+    fontWeight: 'bold',
+    fontSize: 20
   },
 });
 

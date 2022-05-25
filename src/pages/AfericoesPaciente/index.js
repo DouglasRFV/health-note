@@ -5,9 +5,10 @@ import firebase from '../../config/firebase'
 import styles from './style';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-export default function MinhasAfericoes({ navigation, route }) {
+export default function AfericoesPaciente({ navigation, route }) {
 
   const [dadosAfericoes, setDadosAfericoes] = useState([]);
+  const idUser = route.params.idUser
 
   const db = firebase.firestore();
 
@@ -20,7 +21,7 @@ export default function MinhasAfericoes({ navigation, route }) {
   }
 
   const getDadosAfericoes = () => {
-    db.collection('afericoes').doc(global.userId).get()
+    db.collection('afericoes').doc(idUser).get()
       .then(doc => {
         if (doc && doc.exists) {
           let dados = doc.data();
@@ -43,7 +44,7 @@ export default function MinhasAfericoes({ navigation, route }) {
   }
 
   const atualizaAfericao = () => {
-    // db.collection('afericoes').doc(global.userId).where('data', '==', '2022-05-20').update({
+    // db.collection('afericoes').doc(idUser).where('data', '==', '2022-05-20').update({
     //   observacao: 'teste testes teste'  
     // }).then(() => {
     //   console.log("Document successfully written!");

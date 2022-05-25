@@ -8,6 +8,8 @@ import Home from "./src/pages/Home";
 import Chart from "./src/pages/Chart";
 import Afericao from "./src/pages/Afericao";
 import MinhasAfericoes from "./src/pages/MinhasAfericoes";
+import ChartPaciente from "./src/pages/ChartPaciente";
+import AfericoesPaciente from "./src/pages/AfericoesPaciente";
 
 const Drawer = createDrawerNavigator();
 
@@ -68,6 +70,26 @@ export default function App() {
             headerTintColor: "#33ACFF",
             headerTitle: "Minhas Aferições",
             drawerLabel: 'Minhas Aferições'
+          }}
+        />
+        <Drawer.Screen
+          name="ChartPaciente"
+          component={ChartPaciente}
+          options={{
+            drawerItemStyle: { display: 'none' },
+            headerTintColor: "#33ACFF",
+            headerTitle: "Gráficos do Paciente",
+            drawerLabel: 'Gráficos do Paciente'
+          }}
+        />
+        <Drawer.Screen
+          name="AfericoesPaciente"
+          component={AfericoesPaciente}
+          options={{
+            drawerItemStyle: { display: 'none' },
+            headerTintColor: "#33ACFF",
+            headerTitle: "Aferições do Paciente",
+            drawerLabel: 'Aferições do Paciente'
           }}
         />
       </Drawer.Navigator>

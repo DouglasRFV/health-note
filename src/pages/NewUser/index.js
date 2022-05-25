@@ -67,10 +67,12 @@ export default function NewUser({ navigation }) {
             crm: crm
           });
         } else {
-          db.collection('pacientesMedico').doc(nomeMedico).set({
-            id: user.uid,
-            nome: nome,
-            cpf: cpf
+          db.collection('pacientesMedico').doc(nomeMedico).update({
+            [user.uid]: {
+              id: user.uid,
+              nome: nome,
+              cpf: cpf
+            }
           });
 
           db.collection('afericoes').doc(global.userId).set({

@@ -1,35 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ActivityIndicator, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, ActivityIndicator, TouchableOpacity } from 'react-native';
 import Chart from '../Chart';
 
 import firebase from '../../config/firebase'
 import styles from './style';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-export default function Home({ navigation, route }) {
+export default function ChartPaciente({ navigation, route }) {
   const [dadosUsuario, setDadosUsuario] = useState([]);
-  const [tipoUsuario, setTipoUsuario] = useState(0);
   const [arrGlicemia, setArrGlicemia] = useState([]);
   const [arrDiasAfericao, setArrDiasAfericao] = useState([]);
   const [arrPressao, setArrPressao] = useState([]);
   const [loading, setLoading] = useState(true);
   const [semAfericao, setSemAfericao] = useState(false);
-  const [dadosPacientes, setDadosPacientes] = useState([]);
-
+  const idUser = route.params.idUser;
   const db = firebase.firestore();
 
   const getDadosUsuario = async () => {
-    await db.collection('dadosUsuarios').doc(global.userId).get()
+    await db.collection('dadosUsuarios').doc(idUser).get()
       .then(doc => {
         if (doc && doc.exists) {
           setDadosUsuario(doc.data());
-          if (doc.data().tipoUsuario === '1') {
-            setTipoUsuario(1);
-            getPacientes();
-          } else if (doc.data().tipoUsuario === '2') {
-            setTipoUsuario(2);
-            getDadosAfericoes();
-          }
         }
       })
       .catch(err => {
@@ -38,7 +28,7 @@ export default function Home({ navigation, route }) {
   };
 
   const getDadosAfericoes = async () => {
-    await db.collection('afericoes').doc(global.userId).get()
+    await db.collection('afericoes').doc(idUser).get()
       .then(doc => {
         if (doc.exists && doc.data()) {
           let dados = doc.data();
@@ -113,61 +103,9 @@ export default function Home({ navigation, route }) {
     return arr;
   }
 
-  const getPacientes = () => {
-    db.collection('pacientesMedico').doc(global.userId).get()
-      .then(doc => {
-        if (doc && doc.exists) {
-          let dados = doc.data();
-          const arrDados = [];
-          Object.values(dados).map(item => {
-            arrDados.push(item)
-          })
-          console.log('DADOS =>', arrDados);
-          setDadosPacientes(arrDados);
-          setLoading(false);
-        }
-      })
-      .catch(err => {
-        console.log('Error getting documents', err);
-      });
-  };
-
-  const pacienteChart = (idUser) => {
-    navigation.navigate('ChartPaciente', { idUser: idUser })
-  }
-
-  const Item = ({ nome, cpf }) => {
-    return (
-      <View style={styles.item}>
-        {/* <View style={styles.contentAlert}>
-          <Text style={styles.textItem}>{nome}</Text>
-          <MaterialCommunityIcons
-            name="alert-circle"
-            size={34}
-            color="#A00011"
-            titleItem='test'
-          />
-        </View> */}
-        <Text style={styles.textItem}>{nome}</Text>
-        <Text style={styles.textItemCPF}>CPF: {cpf}</Text>
-      </View>
-    );
-  };
-
-  const renderItem = ({ item }) => {
-    return (
-      <TouchableOpacity
-        onPress={() => { navigation.navigate('ChartPaciente', { idUser: item.id }) }}>
-        <Item
-          nome={item.nome}
-          cpf={item.cpf}
-        />
-      </TouchableOpacity>
-    )
-  };
-
   useEffect(() => {
     getDadosUsuario();
+    getDadosAfericoes();
   }, []);
 
   if (loading) {
@@ -189,42 +127,33 @@ export default function Home({ navigation, route }) {
         </View>
       );
     } else {
-      if (tipoUsuario === 2) {
-        return (
-          <View style={styles.container}>
-            <Text style={styles.title}>Olá, {dadosUsuario.nome}!</Text>
-            <Text style={styles.textItem}>Gráfico de Glicemia(Últimos 15 dias)</Text>
-            <Chart
-              dadosUsuario={dadosUsuario}
-              dados={arrGlicemia}
-              dias={arrDiasAfericao}
-              sufix={' mg/dL'}
-              decimalPlaces={0}
-            />
-            <Text style={styles.textItem}>Gráfico de Pressão Arterial(Últimos 15 dias)</Text>
-            <Chart
-              dadosUsuario={dadosUsuario}
-              dados={arrPressao}
-              dias={arrDiasAfericao}
-              sufix={' mmHG'}
-              decimalPlaces={1}
-            />
-          </View>
-        )
-      } else if (tipoUsuario === 1) {
-        return (
-          <View style={styles.container}>
-            <Text style={styles.title}>Olá, Dr.(a) {dadosUsuario.nome}!</Text>
-            <Text style={styles.crm}>CRM: {dadosUsuario.crm}/BR</Text>
-            <FlatList
-              data={dadosPacientes}
-              renderItem={renderItem}
-              keyExtractor={item => item.id}
-            />
-          </View>
-        )
-      }
+      return (
+        <View style={styles.container}>
+          <Text style={styles.title}>Aferições de {dadosUsuario.nome}!</Text>
+          <Text style={styles.textItem}>Gráfico de Glicemia(Últimos 15 dias)</Text>
+          <Chart
+            dadosUsuario={dadosUsuario}
+            dados={arrGlicemia}
+            dias={arrDiasAfericao}
+            sufix={' mg/dL'}
+            decimalPlaces={0}
+          />
+          <Text style={styles.textItem}>Gráfico de Pressão Arterial(Últimos 15 dias)</Text>
+          <Chart
+            dadosUsuario={dadosUsuario}
+            dados={arrPressao}
+            dias={arrDiasAfericao}
+            sufix={' mmHG'}
+            decimalPlaces={1}
+          />
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {navigation.navigate('AfericoesPaciente', { idUser: idUser })}}
+          >
+            <Text style={styles.textButton}>Aferições Completas</Text>
+          </TouchableOpacity>
+        </View>
+      )
     }
-
   }
 }
