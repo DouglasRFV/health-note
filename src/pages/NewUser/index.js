@@ -27,7 +27,6 @@ export default function NewUser({ navigation }) {
   ]);
 
   const getMedicos = async () => {
-    // console.log('CHAMOU GET MEDICOS');
     const dados = [];
     await db.collection('medicos').get()
       .then((query) => {

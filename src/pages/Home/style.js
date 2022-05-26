@@ -6,7 +6,6 @@ import { Dimensions } from 'react-native';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: Dimensions.get("window").width,
     backgroundColor: '#fff',
     paddingTop: Platform.OS === 'ios' ? 0 : 20,
     marginLeft: 'auto',  
@@ -36,7 +35,7 @@ const styles = StyleSheet.create({
     color: '#4d5156'  
   },
   textItem: {
-    marginTop: 20,
+    marginTop: 15,
     marginLeft: 10,
     marginBottom: -5,
     fontWeight: 'bold',
@@ -60,7 +59,7 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     elevation: 4,
   },
-  textItem: {
+  textItemCard: {
     marginTop: 2,
     fontWeight: 'bold',
     color: '#55555A',

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ActivityIndicator, TouchableOpacity, FlatList } from 'react-native';
 import Chart from '../Chart';
-
+import { cpfMask } from 'masks-br';
 import firebase from '../../config/firebase'
 import styles from './style';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -19,6 +19,7 @@ export default function Home({ navigation, route }) {
   const db = firebase.firestore();
 
   const getDadosUsuario = async () => {
+    console.log('DADOS USUARIO');
     await db.collection('dadosUsuarios').doc(global.userId).get()
       .then(doc => {
         if (doc && doc.exists) {
@@ -122,7 +123,7 @@ export default function Home({ navigation, route }) {
           Object.values(dados).map(item => {
             arrDados.push(item)
           })
-          console.log('DADOS =>', arrDados);
+          // console.log('DADOS =>', arrDados);
           setDadosPacientes(arrDados);
           setLoading(false);
         }
@@ -139,17 +140,8 @@ export default function Home({ navigation, route }) {
   const Item = ({ nome, cpf }) => {
     return (
       <View style={styles.item}>
-        {/* <View style={styles.contentAlert}>
-          <Text style={styles.textItem}>{nome}</Text>
-          <MaterialCommunityIcons
-            name="alert-circle"
-            size={34}
-            color="#A00011"
-            titleItem='test'
-          />
-        </View> */}
-        <Text style={styles.textItem}>{nome}</Text>
-        <Text style={styles.textItemCPF}>CPF: {cpf}</Text>
+        <Text style={styles.textItemCard}>{nome}</Text>
+        <Text style={styles.textItemCPF}>CPF: {cpfMask(cpf)}</Text>
       </View>
     );
   };
@@ -185,7 +177,7 @@ export default function Home({ navigation, route }) {
     if (semAfericao) {
       return (
         <View>
-          <Text>Nenhuma Aferição Anotada</Text>
+          <Text style={styles.title}>Nenhuma Aferição Anotada</Text>
         </View>
       );
     } else {

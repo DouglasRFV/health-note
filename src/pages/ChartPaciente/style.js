@@ -6,7 +6,6 @@ import { Dimensions } from 'react-native';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // width: Dimensions.get("window").width + 10,
     marginLeft: 'auto',
     marginRight: 'auto',
     backgroundColor: '#fff',

@@ -35,7 +35,6 @@ export default function AfericoesPaciente({ navigation, route }) {
             return new Date(a.data) - new Date(b.data);
           })
           setDadosAfericoes(arrDados);
-          console.log('DADOS');
         }
       })
       .catch(err => {
